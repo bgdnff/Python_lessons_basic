@@ -46,7 +46,9 @@ a = int(input("a="))
 b = int(input("b="))
 c = int(input("c="))
 discr = b*b - 4*a*c
-if discr>0:
+if a==0:
+    print("первый коэффициент не может быть равен нулю")
+elif discr>0:
     print("два корня:")
     print("x1=", (-b-math.sqrt(discr))/(2*a))
     print("x2=", (-b+math.sqrt(discr))/(2*a))
