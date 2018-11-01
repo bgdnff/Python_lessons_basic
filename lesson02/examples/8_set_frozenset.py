@@ -32,6 +32,9 @@ print("'b' in b -->", 'b' in b)
 
 # s == t
 c1 = {'e', 'l', 'o', 'h'}
+print(c)
+print(c1)
+
 print(c == c1)
 
 # s.issubset(t)	s <= t
