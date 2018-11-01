@@ -1,9 +1,24 @@
 # Задание-1: уравнение прямой вида y = kx + b задано в виде строки.
 # Определить координату y точки с заданной координатой x.
 
-equation = 'y = -12x + 11111140.2121'
+equation = 'y = -12x - 11111140.2121'
 x = 2.5
 # вычислите и выведите y
+k = float(equation[equation.find('=')+1:equation.find('x')])
+b = equation[equation.find('x')+1:]
+if b.find('-') != -1:
+    b = -1*float(b[b.find('-')+1:])
+else:
+    b = float(b[b.find('+')+1:])
+
+print('y=', k*x+b)
+
+# вариант 2
+equation = equation.replace(' ','') # удаляем все пробелы из строки,
+#  теперь все числа конвертятся во флоат без проблем
+k = float(equation[equation.find('=')+1:equation.find('x')])
+b = float(equation[equation.find('x')+1:])
+print('y=', k*x+b)
 
 
 # Задание-2: Дата задана в виде строки формата 'dd.mm.yyyy'.
