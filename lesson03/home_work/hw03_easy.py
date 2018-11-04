@@ -5,7 +5,12 @@
 # Для решения задачи не используйте встроенные функции и функции из модуля math.
 
 def my_round(number, ndigits):
-    pass
+    tens = 10**ndigits
+    big_number = number*tens
+    if big_number%1 < 0.5 :
+        return (big_number//1)/tens
+    else:
+        return (big_number//1+1)/tens
 
 
 print(my_round(2.1234567, 5))
@@ -20,9 +25,10 @@ print(my_round(2.9999967, 5))
 # !!!P.S.: функция не должна НИЧЕГО print'ить
 
 def lucky_ticket(ticket_number):
-    pass
+    t_list = [int(i) for i in list(str(ticket_number))]  # перегоняем число в список цифр
+    return sum(t_list[:len(t_list)//2]) == sum(t_list[-1*(len(t_list)//2):])  # сравниваем половинки
 
 
-print(lucky_ticket(123006))
+print(lucky_ticket(123001))
 print(lucky_ticket(12321))
 print(lucky_ticket(436751))
