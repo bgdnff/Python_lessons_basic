@@ -19,15 +19,11 @@ def NOK(a,b):
 # print(NOK(1,42))
 
 def getnext(i, str):
-    print(i,str)
-    #nonlocal fr_str, str
     if i == -1:
-        print(str, '!', str)
         return [str,str]
     else:
         substr = str[:i]
         str = str[i+1:]
-        print(substr,'!', str)
         return [substr,str]
 
 def read_fraction():
@@ -60,13 +56,10 @@ def twofractions(str):
     parser = getnext(parser[1].find(' '),parser[1])
     sign = parser[0]
     fract2 = read_fraction()
-    print(fract1)
-    print(fract2)
     if sign == '-':
         fract2['sig'] *=-1
 
     numer = unregular_numer(fract1)*fract2['denomerator']+unregular_numer(fract2)*fract1['denomerator']
-    print(unregular_numer(fract1),unregular_numer(fract2))
     den = fract1['denomerator']*fract2['denomerator']
     result_fr={'sig':1, 'whole':0, 'numerator':0, 'denomerator':1}
     if numer < 0:
