@@ -8,7 +8,90 @@
 # Вывод: 1 17/42  (результат обязательно упростить и выделить целую часть)
 # Ввод: -2/3 - -2
 # Вывод: 1 1/3
+parser = []
+def NOK(a,b):
+    while a%b :
+        temp = a%b
+        a=b
+        b=temp
+    return b
 
+# print(NOK(1,42))
+
+def getnext(i, str):
+    print(i,str)
+    #nonlocal fr_str, str
+    if i == -1:
+        print(str, '!', str)
+        return [str,str]
+    else:
+        substr = str[:i]
+        str = str[i+1:]
+        print(substr,'!', str)
+        return [substr,str]
+
+def read_fraction():
+    fraction={'sig':1, 'whole':0, 'numerator':0, 'denomerator':1}
+    global parser
+    i=0
+    #parser = ["",fr_str]
+
+    if parser[1][i]== '-':
+        fraction['sig'] = -1
+        i+=1
+    parser = ['', parser[1][i:]]
+    parser = getnext(parser[1].find(' '), parser[1])
+
+    if parser[0].find('/') == -1:
+        fraction['whole'] = int(parser[0])
+        parser = getnext(parser[1].find(' '), parser[1])
+    fraction['numerator'] = int(parser[0][:parser[0].find('/')])
+    fraction['denomerator'] = int(parser[0][parser[0].find('/')+1:])
+    return fraction
+
+def twofractions(str):
+    def unregular_numer(fract):
+        return int(fract['sig']*(fract['whole']*fract['denomerator']+fract['numerator']))
+    global parser
+    parser = ['',str]
+    fract1 = []
+    fract2 = []
+    fract1 = read_fraction()
+    parser = getnext(parser[1].find(' '),parser[1])
+    sign = parser[0]
+    fract2 = read_fraction()
+    print(fract1)
+    print(fract2)
+    if sign == '-':
+        fract2['sig'] *=-1
+
+    numer = unregular_numer(fract1)*fract2['denomerator']+unregular_numer(fract2)*fract1['denomerator']
+    print(unregular_numer(fract1),unregular_numer(fract2))
+    den = fract1['denomerator']*fract2['denomerator']
+    result_fr={'sig':1, 'whole':0, 'numerator':0, 'denomerator':1}
+    if numer < 0:
+        result_fr['sig'] = -1
+        numer*=-1
+    result_fr['whole'] = numer//den
+    numer = numer%den
+
+    nok = NOK(numer,den)
+
+    result_fr['numerator'] = numer//nok
+    result_fr['denomerator'] = den//nok
+    res_str = ''
+    if result_fr['sig']<0:
+        res_str='-'
+
+    if result_fr['whole']!=0:
+        res_str+='{} '.format(result_fr['whole'])
+    if result_fr['numerator']!=0:
+        res_str+='{}/{}'.format(result_fr['numerator'], result_fr['denomerator'])
+    return res_str
+
+
+
+print(twofractions('-1 2/3 + -1 4/6'))
 
 # Задание-2:
 # Дана ведомость расчета заработной платы (файл "data/workers").
