@@ -1,3 +1,4 @@
+import re
 # Задание-1:
 # Вывести символы в нижнем регистре, которые находятся вокруг
 # 1 или более символов в верхнем регистре.
@@ -19,7 +20,22 @@ line = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysmNO'\
        'qHFjvihuNGEEFsfnMXTfptvIOlhKhyYwxLnqOsBdGvnuyEZIheApQGOXWeXoLWiDQNJFa'\
        'XiUWgsKQrDOeZoNlZNRvHnLgCmysUeKnVJXPFIzvdDyleXylnKBfLCjLHntltignbQoiQ'\
        'zTYwZAiRwycdlHfyHNGmkNqSwXUrxGc'
+### c RE
 
+t_line = re.sub('[^A-Za-z]', '', line)  # удалим все буквы кроме больших и маленьких латинских букв
+# этот вариант подходит для предложенной строки(состоит только из больших и маленьких букв),
+# но не для общего случая
+print(re.split('[A-Z]+',t_line))
+
+#### без RE
+"""
+upper = True
+lower = False
+word =
+for ch in line:
+       if ch.islower():
+           if upper:
+"""
 
 # Задание-2:
 # Вывести символы в верхнем регистре, слева от которых находятся
@@ -45,9 +61,13 @@ line_2 = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysm'\
        'JFaXiUWgsKQrDOeZoNlZNRvHnLgCmysUeKnVJXPFIzvdDyleXylnKBfLCjLHntltignbQ'\
        'oiQzTYwZAiRwycdlHfyHNGmkNqSwXUrxGC'
 
+pattern = '[a-z]{2}([A-Z]+)[A-Z]{2}'
+print(re.findall(pattern, line_2))
 # Задание-3:
 # Напишите скрипт, заполняющий указанный файл (самостоятельно задайте имя файла)
 # произвольными целыми цифрами, в результате в файле должно быть
 # 2500-значное произвольное число.
 # Найдите и выведите самую длинную последовательность одинаковых цифр
 # в вышезаполненном файле.
+pattern = r'(?:.)\1+'
+print(re.findall(pattern,line_2))
