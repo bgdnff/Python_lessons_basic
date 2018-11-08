@@ -86,7 +86,6 @@ print(re.findall(pattern, line_2))
 # без re
 lows = 0
 ups = 0
-up2 =0
 result2 = []
 
 for i in range(len(line_2)):
@@ -130,26 +129,22 @@ file = 'longnumber.txt'
 #fillfile(file)
 with open(file, 'r', encoding='UTF-8') as f:
     long_line = f.readline()
-    print(long_line)
 
-max = 0
+
+maxline = 0
 maxchar = ''
 curr = 0
 prev = ''
 
-#long_line = '12233344443335555544444'
+# перебираем все символы в строке и сравниваем с предыдущим,
+# если совпадают, увеличиваем счетчик, если нет - сбрасываем счетчик
 for ch in long_line:
     if ch is prev:
         curr +=1
     else:
-        if curr>1:
-            print(prev*curr)
-        if max<curr:
-            max = curr
+        if maxline<curr:
+            maxline = curr
             maxchar = prev
-            print(max,maxchar)
         curr=1
     prev = ch
-print(maxchar*max)
-#pattern = r'(?:.)\1+'
-#print(re.findall(pattern,line_2))
+print(maxchar*maxline)
