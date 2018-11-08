@@ -126,7 +126,7 @@ def fillfile(filename):
 
 file = 'longnumber.txt'
 
-#fillfile(file)
+fillfile(file)
 with open(file, 'r', encoding='UTF-8') as f:
     long_line = f.readline()
 
