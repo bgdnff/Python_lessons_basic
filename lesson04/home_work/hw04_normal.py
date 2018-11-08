@@ -20,22 +20,40 @@ line = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysmNO'\
        'qHFjvihuNGEEFsfnMXTfptvIOlhKhyYwxLnqOsBdGvnuyEZIheApQGOXWeXoLWiDQNJFa'\
        'XiUWgsKQrDOeZoNlZNRvHnLgCmysUeKnVJXPFIzvdDyleXylnKBfLCjLHntltignbQoiQ'\
        'zTYwZAiRwycdlHfyHNGmkNqSwXUrxGc'
-### c RE
 
-t_line = re.sub('[^A-Za-z]', '', line)  # удалим все буквы кроме больших и маленьких латинских букв
+# c RE
+
 # этот вариант подходит для предложенной строки(состоит только из больших и маленьких букв),
 # но не для общего случая
-print(re.split('[A-Z]+',t_line))
+print(re.split('[A-Z]+', line))
 
 #### без RE
-"""
-upper = True
-lower = False
-word =
-for ch in line:
-       if ch.islower():
-           if upper:
-"""
+
+# Есть несколько способов: с использованием for ch in line, но тогда придется собирать подстроки посимвольно
+# можно получать подстроки через срезы, но тогда нужно проходить строку с помощью индексов,
+# наконец, можно получать индексы с помощью enumerate, но тогда создается список,
+# где к каждому символу из строки припишется номер - т.е. вдвое бльший размер
+# и дополнитеьный проход по строке, что тоже нехорошо.
+
+i = 0
+started = False
+result = []
+for i in range(len(line)):
+    if started:
+        if line[i].isupper():               # если отслеживали подстроку и встретили верхний регистр
+            result.append(line[start:i])    # то записываем ее в результат
+            started = False                 # и заканчиваем отслеживание
+    else:
+        if line[i].islower():               # если еще не начали отслеживать подстроку из малых букв,
+                start = i                   # то начинаем
+                started = True
+
+
+if started:                                 # если осталась незаконченая строка, записываем ее в результат
+    result.append(line[start:])
+
+print(result)
+
 
 # Задание-2:
 # Вывести символы в верхнем регистре, слева от которых находятся
@@ -63,11 +81,75 @@ line_2 = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysm'\
 
 pattern = '[a-z]{2}([A-Z]+)[A-Z]{2}'
 print(re.findall(pattern, line_2))
+
+
+# без re
+lows = 0
+ups = 0
+up2 =0
+result2 = []
+
+for i in range(len(line_2)):
+    if line_2[i].isupper():                             # если большой - считаем его
+        ups += 1
+    else:
+        if ups:                                         # попали на малыйсимвол после большого (ups>0)
+            if ups > 2 and lows >= 2:                   # и больших было больше двух, а до них малых не меньше 2
+                result2.append(line_2[i-ups:i-2])       # то это то что нам нужно!
+
+            ups = 0                                     # сбрасываем сетчики
+            lows = 1                                    # один малый мы читаем как раз сейчас
+        else:
+            lows +=1                                    # если малый после малого, просто увеличиваем счетчик
+
+# опять проверяем конец строки
+if ups > 2 and lows >= 2:
+    result2.append(line_2[i-ups:i-2])
+
+
+
+print(result2)
+
+
 # Задание-3:
 # Напишите скрипт, заполняющий указанный файл (самостоятельно задайте имя файла)
 # произвольными целыми цифрами, в результате в файле должно быть
 # 2500-значное произвольное число.
 # Найдите и выведите самую длинную последовательность одинаковых цифр
 # в вышезаполненном файле.
-pattern = r'(?:.)\1+'
-print(re.findall(pattern,line_2))
+
+import os, random
+
+def fillfile(filename):
+    with open(filename, 'w', encoding='UTF-8') as f:
+        for i in range(2500):
+            f.write(str(random.randint(0, 9)))
+
+file = 'longnumber.txt'
+
+#fillfile(file)
+with open(file, 'r', encoding='UTF-8') as f:
+    long_line = f.readline()
+    print(long_line)
+
+max = 0
+maxchar = ''
+curr = 0
+prev = ''
+
+#long_line = '12233344443335555544444'
+for ch in long_line:
+    if ch is prev:
+        curr +=1
+    else:
+        if curr>1:
+            print(prev*curr)
+        if max<curr:
+            max = curr
+            maxchar = prev
+            print(max,maxchar)
+        curr=1
+    prev = ch
+print(maxchar*max)
+#pattern = r'(?:.)\1+'
+#print(re.findall(pattern,line_2))
