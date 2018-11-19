@@ -57,3 +57,36 @@
 модуль random: http://docs.python.org/3/library/random.html
 
 """
+import random
+
+
+class Card:
+    def __init__(self, player):
+        self.player = player
+        self.allnumbers = set()
+        while len(self.allnumbers)<15:
+            self.allnumbers.add(random.randint(1,90))
+
+        self.lines = []
+        self.lines.append(list(self.allnumbers)[:5])
+        self.lines.append(list(self.allnumbers)[5:10])
+        self.lines.append(list(self.allnumbers)[10:])
+        self.lines[0].sort()
+        self.lines[1].sort()
+        self.lines[2].sort()
+        for i in range(4):
+            self.lines[0].insert(random.randint(0,5+i),'  ')
+            self.lines[1].insert(random.randint(0,5+i),'  ')
+            self.lines[2].insert(random.randint(0,5+i),'  ')
+
+    def print_card(self):
+        print('{:-^26}'.format(' '+self.player+' '))
+        str=''
+        for l in self.lines:
+            print(str.join(['{: >2} '.format(i) for i in l]))
+        print('{:-^26}'.format(''))
+
+c = Card('Игрок')
+print(c.allnumbers)
+print(c.lines)
+c.print_card()
