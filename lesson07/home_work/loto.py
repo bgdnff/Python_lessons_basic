@@ -60,13 +60,17 @@
 import random
 
 
+
 class Card:
     def __init__(self, player):
         self.player = player
+        self.checked = 0
         self.allnumbers = set()
+        random.seed()
         while len(self.allnumbers)<15:
-            self.allnumbers.add(random.randint(1,90))
-
+            self.allnumbers.add(random.randint(1, 90))
+        self.allnumbers = list(self.allnumbers)
+        random.shuffle(self.allnumbers)
         self.lines = []
         self.lines.append(list(self.allnumbers)[:5])
         self.lines.append(list(self.allnumbers)[5:10])
@@ -86,7 +90,39 @@ class Card:
             print(str.join(['{: >2} '.format(i) for i in l]))
         print('{:-^26}'.format(''))
 
-c = Card('Игрок')
-print(c.allnumbers)
-print(c.lines)
-c.print_card()
+    def check_barrel(self, barrel):
+        for line in self.lines:
+            if line.count(barrel):
+                line[line.index(barrel)] = '--'
+                self.checked +=1
+                return True
+
+        return False
+
+
+
+
+used = []
+players = [Card('Player'),  Card('Computer')]
+wins = [False,False]
+while not(wins[0]or wins[1]):
+    bar = random.randint(1, 90)
+    while bar in used:
+        bar = random.randint(1, 90)
+    used.append(bar)
+    print('выпал бочонок: {} (осталось {})'.format(bar,90-len(used)))
+    for p in players:
+        p.print_card()
+    choice = ''
+    while choice not in ('y','n'):
+        choice=input('Зачеркнуть цифру? (y/n)')
+    check = players[0].check_barrel(bar)
+    if (choice == 'y')== check :
+        wins[0] = (players[0].checked == 15)
+        # компьютер слегка читерит :)
+        print('компьютер зачеркивает' if players[1].check_barrel(bar) else 'компьютер пропускает ход')
+        wins[1] = (players[1].checked == 15)
+    else:
+        wins[1] = True
+
+print('Вы победили!' if wins[0] else 'Вы проиграли')
